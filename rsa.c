@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 #include "rsa.h"
 #include "prf.h"
 
@@ -48,6 +49,15 @@ int zFromFile(FILE* f, mpz_t x)
 	memset(buf,0,len);
 	free(buf);
 	return 0;
+}
+
+void setPrime(mpz_t prime, size_t bytes){
+    unsigned char* buf = malloc(bytes);
+    do{
+        randBytes(buf, bytes);
+        BYTES2Z(prime, buf, bytes);
+    }while (!ISPRIME(prime));
+    free(buf);
 }
 
 int rsa_keyGen(size_t keyBits, RSA_KEY* K)
@@ -98,13 +108,33 @@ size_t rsa_encrypt(unsigned char* outBuf, unsigned char* inBuf, size_t len,
 {
 	/* TODO: write this.  Use BYTES2Z to get integers, and then
 	 * Z2BYTES to write the output buffer. */
-	return 0; /* TODO: return should be # bytes written */
+	mpz_t inInt;
+    mpz_init(inInt);
+
+    BYTES2Z(inInt, inBuf, len);
+
+    mpz_t outInt;
+    mpz_init(outInt);
+    mpz_powm(outInt, inInt, K->e, K->n);
+
+    Z2BYTES(outBuf, len, outInt);
+	return len; /* TODO: return should be # bytes written */
 }
 size_t rsa_decrypt(unsigned char* outBuf, unsigned char* inBuf, size_t len,
 		RSA_KEY* K)
 {
 	/* TODO: write this.  See remarks above. */
-	return 0;
+	mpz_t inInt;
+    mpz_init(inInt);
+
+    BYTES2Z(inInt, inBuf, len);
+
+    mpz_t outInt;
+    mpz_init(outInt);
+    mpz_powm(outInt, inInt, K->d, K->n);
+
+    Z2BYTES(outBuf, len, outInt);
+	return len;
 }
 
 size_t rsa_numBytesN(RSA_KEY* K)
