@@ -319,14 +319,7 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-/**
- * Encrypts a file using a public RSA key.
- *
- * @param fnOut The output filename for the encrypted content.
- * @param fnIn The input filename of the content to encrypt.
- * @param fnKey The filename of the public key to use for encryption.
- * @return 0 on success, -1 on failure.
- */
+
 int encrypt(char* fnOut, char* fnIn, char* fnKey) {
     FILE* keyFile = fopen(fnKey, "r");
     if (!keyFile) {
@@ -351,14 +344,7 @@ int encrypt(char* fnOut, char* fnIn, char* fnKey) {
     return 0;
 }
 
-/**
- * Decrypts a file using a private RSA key.
- *
- * @param fnOut The output filename for the decrypted content.
- * @param fnIn The input filename of the encrypted content.
- * @param fnKey The filename of the private key to use for decryption.
- * @return 0 on success, -1 on failure.
- */
+
 int decrypt(char* fnOut, char* fnIn, char* fnKey) {
     FILE* privateKey = fopen(fnKey, "r");
     if (!privateKey) {
