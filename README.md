@@ -4,7 +4,7 @@ Build a public key cryptosystem using a key encapsulation mechanism (KEM)
 
 # Group Menmber
     Maoxi Xu
-    Zhouqiang Gao    
+    Gaoqiang Zhou   
     Zhuowen Zhong
 
  
